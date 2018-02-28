@@ -5,8 +5,16 @@
 
     <div>
         <form action="/report/upload" method="post" enctype="multipart/form-data" autocomplete="off">
-            File: <input type="file" name="csv" />
-            Type: <input name="type" type="text" value="lloyds" />
+            <label>Upload bank statement (CSV): <input type="file" name="csv" /></label>
+            <label>
+              Type:
+              <select name="type" >
+              <option selected value="lloyds">Lloyds Bank</option>
+              <option value="hsbc">HSBC</option>
+              <option value="fairfx-corp">FairFX Corp</option>
+              <option value="midata" >Midata</option>
+              <option value="rbs">RBS (UNTESTED)</option>
+            </label>
             <input type="hidden" name="month" value="{{month}}" />
             <input type="submit" />
         </form>
