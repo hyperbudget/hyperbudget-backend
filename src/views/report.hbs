@@ -1,0 +1,90 @@
+{{> top }}
+
+{{#unless error}}
+
+
+    <div>
+        <form action="/report/upload" method="post" enctype="multipart/form-data" autocomplete="off">
+            File: <input type="file" name="csv" />
+            Type: <input name="type" type="text" value="lloyds" />
+            <input type="hidden" name="month" value="{{month}}" />
+            <input type="submit" />
+        </form>
+    </div>
+
+    <div class='clearfix mt-5'>
+        <div class='float-left'>
+            <a class='btn-outline-primary btn' role='button' href="/report/{{prevDate}}">Previous period</a>
+        </div>
+        <div class='float-right'>
+            <a class='btn-outline-primary btn' role='button' href="/report/{{nextDate}}">Next period</a>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <a class='btn-outline-primary btn' role='button' href="/report/{{currentMonth}}">This month</a>
+    </div>
+
+    <div class="text-center mt-2">
+        <h1>Currently viewing: {{human}}</h1>
+    </div>
+
+    {{#unless transactions.length}}
+        <div class="jumbotron mt-5 text-center">
+            <h1 class="display-3">Nothing here</h1>
+            <p class="lead">You have no transactions for this period.</p>
+            <a class='btn-outline-primary btn' role='button' href="/report/{{currentMonth}}">Go back to current month</a>
+        </div>
+    {{/unless}}
+
+
+    {{#if transactions.length}}
+      <a role='button' class='btn btn-danger collapsey' data-collapsed-text='Expand categories' data-open-text='Collapse categories' data-target='categories-table' data-collapsed='false'>Collapse categories</a>
+        <table class="table mt-3 categories" id='categories-table'>
+          {{#each categories}}
+           {{#if name}}
+             <tr class="{{className}}">
+               <td>{{name}}</td><td>{{total}}</td><td>{{count}}</td>
+             </tr>
+           {{/if}}
+          {{/each}}
+        </table>
+
+        <table border=1 class="table magic-table mt-2" id="report">
+            <tr data-sort-method='none'>
+                <th>
+                    Date
+                </th>
+                <th>Type</th>
+                <th>Description</th>
+                <th data-sort-method="number">Debit amount</th>
+                <th data-sort-method="number">Credit amount</th>
+                <th data-sort-method="number" class="running_total_spend">Running total spend</th>
+                <th data-sort-method="number">Balance</th>
+                <th>Categories</th>
+                <th>src</th>
+            </tr>
+
+            {{#each transactions}}
+            <tr class='{{cat_class}}'>
+                <td class='nobreak'>
+                    {{ txn_date }}</td>
+                <td>
+                    {{ txn_type }}</td>
+                <td>{{ txn_desc }}</td>
+                <td>{{ txn_amount_debit }}</td>
+                <td>{{ txn_amount_credit }}</td>
+                <td class="running_total_spend">{{ running_total_spend }}</td>
+                <td>{{ acc_balance }}</td>
+                <td>{{ category_names }}</td>
+                <td class="src">{{ txn_src }}</td>
+            </tr>
+            {{/each}}
+        </table>
+    {{/if}}
+{{/unless}}
+{{#if error}}
+    <div class='error'>{{error}} - {{exception}}</div>
+{{/if}}
+
+{{> bottom }}

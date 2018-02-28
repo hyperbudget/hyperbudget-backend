@@ -1,0 +1,8 @@
+node_modules
+.sw?
+.*.sw?
+dist
+.dependencies
+csvs/
+db/
+config.json

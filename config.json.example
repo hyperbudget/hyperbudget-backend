@@ -1,0 +1,225 @@
+{
+  "preferences": {
+    "categories": [{
+      "name": "Income",
+      "category_rules": {
+        "txn_amount_credit": {
+          "mode": 1001,
+          "rules": [
+            [">", 0]
+          ]
+        },
+        "txn_desc": {
+          "mode": 1001,
+          "rules": [
+            ["!~", "YOUR NAME"]
+          ]
+        }
+      },
+      "className": "cat-income",
+      "id": "income"
+    }, {
+      "name": "Main Income",
+      "category_rules": {
+        "txn_amount_credit": {
+          "rules": [
+            [">", 1000]
+          ]
+        },
+        "txn_desc": {
+          "rules": [
+            ["!~", "YOUR NAME"]
+          ]
+        }
+      },
+      "className": "cat-income",
+      "id": "main-income",
+      "txn_month_modifier": 1
+    }, {
+      "name": "Expenditure",
+      "category_rules": {
+        "txn_amount_debit": {
+          "rules": [
+            [">", 0]
+          ]
+        },
+        "txn_desc": {
+          "rules": [
+            ["!~", "YOUR NAME"]
+          ]
+        }
+      },
+      "className": "cat-exp",
+      "id": "exp"
+    }, {
+      "name": "Refunds",
+      "category_rules": {
+        "txn_type": {
+          "rules": [
+            ["=", "DEB"]
+          ]
+        },
+        "txn_amount_credit": {
+          "rules": [
+            [">", 0]
+          ]
+        }
+      },
+      "className": "class-refunds",
+      "id": "refunds"
+    }, {
+      "name": "Bills",
+      "category_rules": {
+        "txn_type": {
+          "rules": [
+            ["=", "DD"]
+          ]
+        }
+      },
+      "className": "cat-bills",
+      "id": "bills"
+    }, {
+      "name": "Rent",
+      "category_rules": {
+        "txn_type": {
+          "rules": [
+            ["=", "SO"]
+          ]
+        }
+      },
+      "className": "cat-rent",
+      "id": "rent"
+    }, {
+      "name": "Rent2",
+      "category_rules": {
+        "txn_type": {
+          "rules": [
+            ["=", "SO"]
+          ]
+        },
+        "txn_day": {
+          "rules": [
+            ["<", 15]
+          ]
+        }
+      },
+      "txn_month_modifier": -1,
+      "className": "cat-rent",
+      "id": "rent-bring-back",
+      "hidden_on_cat_list": true,
+      "hidden_on_txn_list": true
+    }, {
+      "name": "Bills 2",
+      "category_rules": {
+        "txn_type": {
+          "rules": [
+            ["=", "DD"]
+          ]
+        },
+        "txn_desc": {
+          "mode": 1002,
+          "rules": [
+            ["=~", "VIRGIN MEDIA"],
+            ["=~", "RATESETTER"]
+          ]
+        },
+        "txn_day": {
+          "rules": [
+            [">", 15]
+          ]
+        }
+      },
+      "txn_month_modifier": 1,
+      "className": "cat-bills",
+      "id": "bills",
+      "hidden_on_cat_list": true,
+      "hidden_on_txn_list": true
+    }, {
+      "name": "Cash Withdrawals",
+      "category_rules": {
+        "txn_type": {
+          "rules": [
+            ["=", "CPT"]
+          ]
+        }
+      },
+      "className": "cat-cpt",
+      "id": "cpt"
+    }, {
+      "name": "Personal Bank Transfers",
+      "category_rules": {
+        "txn_desc": {
+          "rules": [
+            ["=~", "YOUR NAME"]
+          ]
+        }
+      },
+      "className": "cat-tfr-pers",
+      "id": "tfr-pers"
+    }, {
+      "name": "Source: HSBC",
+      "category_rules": {
+        "txn_src": {
+          "rules": [
+            ["=", "HSBC"]
+          ]
+        }
+      },
+      "className": "cat-hsbc",
+      "id": "hsbc"
+    }, {
+      "name": "Source: FairFX Corp",
+      "category_rules": {
+        "txn_src": {
+          "rules": [
+            ["=", "FairFX Corp"]
+          ]
+        }
+      },
+      "className": "cat-ffxcorp",
+      "id": "ffxcorp"
+    }, {
+      "name": "Source: Midata",
+      "category_rules": {
+        "txn_src": {
+          "rules": [
+            ["=", "Midata"]
+          ]
+        }
+      },
+      "className": "cat-midata",
+      "id": "midata"
+    }, {
+      "name": "Source: RBS",
+      "category_rules": {
+        "txn_src": {
+          "rules": [
+            ["=", "RBS"]
+          ]
+        }
+      },
+      "className": "cat-rbs",
+      "id": "rbs"
+    }, {
+      "name": "Source: LLoyds",
+      "category_rules": {
+        "txn_amount_debit": {
+          "rules": [
+            [">", 0]
+          ]
+        },
+        "txn_src": {
+          "rules": [
+            ["=", "Lloyds"]
+          ]
+        }
+      },
+      "className": "cat-lloyds",
+      "id": "lloyds"
+    }]
+  },
+  "comment": {
+    "1001": "strict",
+    "1002": "flex"
+  }
+}

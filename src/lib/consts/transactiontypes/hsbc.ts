@@ -1,0 +1,15 @@
+export const HSBCTransTypes = {
+    'ATM'         : 'CPT',
+    'BP'          : 'BACS',
+    'CHQ'         : 'CHQ',
+    'CIR'         : 'CIR',
+    'CR'          : 'CR',
+    'DD'          : 'DD',
+    'DIV'         : 'DIV',
+    'DR'          : 'DEB',
+    'VIS'         : 'DEB',
+    'MAE'         : 'DEB',
+    'SO'          : 'SO',
+    'TRF'         : 'TFR',
+    ')))'         : 'DEB',
+};
