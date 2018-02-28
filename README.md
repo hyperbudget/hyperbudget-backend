@@ -8,7 +8,9 @@ This is a budgeting helper. Right now, the only way to use it is to install loca
 
 Users can import transactions from their bank accounts (currently only in `CSV` format; there are plans to improve this in the future).
 
-Users can then configure transaction categories in `config.json` (**subject to change**). This makes certain transations appear differently in the user's statements. Transactions can also be moved forward or backwards from their original time (more or that later)
+Users can then configure transaction categories in `config.json` (**subject to change**). This makes certain transations appear differently in the user's statements. Transactions can also be moved forward or backwards from their original time.
+
+See the [wiki](https://github.com/errietta/hyperbudget/wiki/Categories) for information on how this works.
 
 **SUBJECT TO CHANGE**
 
