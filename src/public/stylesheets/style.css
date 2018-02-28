@@ -1,0 +1,128 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+  cursor: pointer;
+}
+
+a:hover,
+a:active {
+  color: #00B7FF;
+  text-decoration: underline;
+}
+
+a.danger {
+  color: red;
+}
+
+.spacing {
+  margin-bottom: 20px;
+}
+
+input.ng-invalid.ng-touched {
+  border: 1px solid red;
+}
+
+.container {
+    margin-top: 30px;
+}
+
+.dropdown-menu {
+    background: #343a40 ;
+}
+.dropdown-item {
+    color: white ;
+}
+.dropdown-item.active {
+    background: rgb(132, 132, 132) ;
+}
+
+.categories tr.cat-hsbc, .cat-hsbc td.src {
+    background-color: #DB0011;
+    color: white;
+}
+
+.categories tr.cat-lloyds, .cat-lloyds td.src {
+    color: white;
+    background-color: #006A4D;
+}
+
+.cat-income {
+    background-color: #00FF00;
+}
+
+.cat-bills, .cat-rent {
+    background-color: #FFCCFF;
+}
+
+.cat-cpt{
+    background-color: #000000;
+    color: white;
+}
+
+.magic-table th {
+    cursor: pointer;
+}
+
+.cat-tfr-pers {
+    background-color: #fbffcc;
+}
+
+.cat-lloyds-match {
+    background-color: #6DA803;
+}
+
+.cat-ffxcorp {
+    background-color: #00192E;
+    color: white;
+}
+
+.cat-rbs {
+    background-color: #0A2F64;
+    color: white;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.breakdown th, .breakdown td {
+    border: 1px solid #CCC;
+}
+
+th.split, td.split {
+    border-right: 3px inset black;
+}
+
+table.categories .gains {
+    font-weight: 700;
+}
+
+nav.main-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  font-size: 300%;
+}
+
+nav.main-nav > ul {
+  list-style-type: none;
+  display: inline;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+nav.main-nav > ul > li {
+  list-style-type: none;
+  display: inline;
+  margin-left: 5px;
+}
+
+.nobreak {
+  word-break: keep-all;
+  white-space: nowrap;
+}
