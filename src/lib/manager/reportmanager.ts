@@ -11,7 +11,7 @@ export class ReportManager {
     let running_total_spend: number = 0;
 
     formatted.forEach(function(formatted_txn) {
-      formatted_txn.cat_class      = formatted_txn.categories.filter((c) => !c.hidden_on_txn_list).map((c) => c.className).join(" ");
+      formatted_txn.cat_class      = formatted_txn.categories.map((c) => c.className).join(" ");
       formatted_txn.category_names = formatted_txn.categories.filter((c) => !c.hidden_on_txn_list).map((c) => c.name).join(", ");
 
       formatted_txn.txn_amount_credit = Utils.format_number(formatted_txn.txn_amount_credit);
