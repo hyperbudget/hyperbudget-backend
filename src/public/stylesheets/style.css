@@ -40,16 +40,6 @@ input.ng-invalid.ng-touched {
     background: rgb(132, 132, 132) ;
 }
 
-.categories tr.cat-hsbc, .cat-hsbc td.src {
-    background-color: #DB0011;
-    color: white;
-}
-
-.categories tr.cat-lloyds, .cat-lloyds td.src {
-    color: white;
-    background-color: #006A4D;
-}
-
 .cat-income {
     background-color: #00FF00;
 }
@@ -73,16 +63,6 @@ input.ng-invalid.ng-touched {
 
 .cat-lloyds-match {
     background-color: #6DA803;
-}
-
-.cat-ffxcorp {
-    background-color: #00192E;
-    color: white;
-}
-
-.cat-rbs {
-    background-color: #0A2F64;
-    color: white;
 }
 
 .text-center {
@@ -125,4 +105,28 @@ nav.main-nav > ul > li {
 .nobreak {
   word-break: keep-all;
   white-space: nowrap;
+}
+
+.categories tr.cat-hsbc, .cat-hsbc td.src {
+    background-color: #DB0011;
+    color: white;
+}
+
+.categories tr.cat-lloyds, .cat-lloyds td.src {
+    color: white;
+    background-color: #006A4D;
+}
+
+.categories tr.cat-ffxcorp, .cat-ffxcorp td.src {
+    background-color: #00192E;
+    color: white;
+}
+
+.categories tr.cat-rbs, .cat-rbs td.src {
+    background-color: #0A2F64;
+    color: white;
+}
+
+.categories tr.midata, .cat-midata td.src {
+  background-color: #b3eff5;
 }
