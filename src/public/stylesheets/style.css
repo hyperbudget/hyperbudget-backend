@@ -130,3 +130,8 @@ nav.main-nav > ul > li {
 .categories tr.midata, .cat-midata td.src {
   background-color: #b3eff5;
 }
+
+.cat-big {
+  background-color: #5f9ea0;
+  font-weight: 900;
+}
