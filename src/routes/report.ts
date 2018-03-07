@@ -6,7 +6,7 @@ import { UploadManager } from '../lib/manager/uploadmanager';
 import Options from '../lib/options';
 import { Utils } from '../lib/utils';
 
-import { FairFXRetailRESTRemote } from '../lib/remotes/fairfx-retail-rest';
+//import { FairFXRetailRESTRemote } from '../lib/remotes/fairfx-retail-rest';
 
 import * as moment from 'moment';
 import * as multer from 'multer';
