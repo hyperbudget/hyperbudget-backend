@@ -46,7 +46,7 @@ The port and host can be configured in the `BUDGET_PORT` and `BUDGET_HOST` env v
 
 ## Bugs
 
-All of them
+All of them!
 
 ## What is this?
 
