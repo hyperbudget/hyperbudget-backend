@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/errietta/hyperbudget.svg?branch=master)](https://travis-ci.org/errietta/hyperbudget)
+[![Build Status](https://travis-ci.org/hyperbudget/hyperbudget.svg?branch=master)](https://travis-ci.org/hyperbudget/hyperbudget)
 
 # hyperbudget
 
