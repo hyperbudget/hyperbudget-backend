@@ -3,10 +3,6 @@ import * as path from 'path';
 import * as del from 'del';
 
 export class Utils {
-  static format_number(num) {
-    return (!isNaN(num) ? Number(num).toFixed(2) : num);
-  }
-
   static loadCollection (colName, db: Loki): Promise<Collection<any>> {
     return new Promise(resolve => {
         db.loadDatabase({}, () => {

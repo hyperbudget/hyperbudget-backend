@@ -1,4 +1,4 @@
-import { Category } from '../../types/category';
+import { Category } from 'hyperbudget-core';
 import { Preference } from '../../types/preference';
 import { UserConfiguration } from '../../types/user-configuration';
 

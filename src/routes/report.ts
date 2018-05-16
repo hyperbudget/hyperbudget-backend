@@ -1,9 +1,7 @@
 import { Request, Response } from 'express';
 
-import { Report, ReportFactory } from '../lib/report';
-import { ReportManager } from '../lib/manager/reportmanager';
+import { Report, ReportFactory, ReportManager, Options, Transaction, Category, Categoriser } from 'hyperbudget-core';
 import { UploadManager } from '../lib/manager/uploadmanager';
-import Options from '../lib/options';
 import { Utils } from '../lib/utils';
 
 //import { FairFXRetailRESTRemote } from '../lib/remotes/fairfx-retail-rest';
@@ -11,7 +9,6 @@ import { Utils } from '../lib/utils';
 import * as moment from 'moment';
 import * as multer from 'multer';
 import { Moment } from 'moment';
-import { Transaction } from '../lib/transaction';
 
 import { SystemConfig } from '../lib/config/system';
 
@@ -23,7 +20,7 @@ let _loadFiles = async () => {
   let csvs = [];
 
   files.forEach(function(file) {
-    csvs.push({ name: file.filename, type: file.report_type });
+    csvs.push({ name: `csvs/${file.filename}`, type: file.report_type });
   });
 
   return csvs;
@@ -36,6 +33,9 @@ export let index = function(req: Request, res: Response) {
 };
 
 export let report = async (req: Request, res: Response) => {
+  let categories: Category[] = SystemConfig.config.preferences.categories;
+  let categoriser: Categoriser = new Categoriser(categories);
+
   let month: string = req.params.month;
 
   // Go from 201701 to 20170101
@@ -49,37 +49,33 @@ export let report = async (req: Request, res: Response) => {
 
   let csvs = await _loadFiles();
 
-  let rf = new ReportFactory({ month: month, date_format: Options.DATE_FORMAT_EUROPE, unique_only: true });
-  rf.
-    from_csvs(
-      csvs
-    )
-    .then(
-      function() {
-        let report:Report = rf.report;
+  let rf = new ReportFactory({ unique_only: true });
 
-        report.transactions = report.transactions.sort(function(a,b) { return a.txn_date.getTime() - b.txn_date.getTime() });
-        let txns = ReportManager.generate_web_frontend_report(report.transactions);
-        let cats = ReportManager.generate_category_amounts_frontend(report.transactions, report.transactions_org);
+  ReportManager.add_csvs(rf, csvs)
+  .then(
+    function() {
+      let report:Report = rf.report;
+      categoriser.categorise_transactions(report.transactions);
+      report.filter_month(month);
 
-        /*res.json({
-          'report': report,
-          });*/
+      report.transactions = report.transactions.sort(function(a,b) { return a.txn_date.getTime() - b.txn_date.getTime() });
+      let txns = ReportManager.generate_web_frontend_report(report.transactions);
+      let cats = ReportManager.generate_category_amounts_frontend(categoriser, report.transactions, report.transactions_org);
 
-        let nextDate = date.clone().add(1, 'month').format('YYYYMM');
-        let prevDate = date.clone().subtract(1, 'month').format('YYYYMM');
+      let nextDate = date.clone().add(1, 'month').format('YYYYMM');
+      let prevDate = date.clone().subtract(1, 'month').format('YYYYMM');
 
-        res.render('report', {
-          transactions: txns,
-          categories: cats,
-          nextDate: nextDate,
-          prevDate: prevDate,
-          month: month,
-          human: moment(month, 'YYYYMM').format('MMM YYYY'),
-          currentMonth: moment().format('YYYYMM'),
-        });
-      }
-    );
+      res.render('report', {
+        transactions: txns,
+        categories: cats,
+        nextDate: nextDate,
+        prevDate: prevDate,
+        month: month,
+        human: moment(month, 'YYYYMM').format('MMM YYYY'),
+        currentMonth: moment().format('YYYYMM'),
+      });
+    }
+  );
 };
 
 export let remote = async (req: Request, res: Response) => {
@@ -124,6 +120,9 @@ export let upload = async (req: Request, res: Response) => {
 };
 
 export let summary = async (req: Request, res: Response) => {
+  let categories: Category[] = SystemConfig.config.preferences.categories;
+  let categoriser: Categoriser = new Categoriser(categories);
+
   let start: string;
   let end: string;
 
@@ -152,43 +151,41 @@ export let summary = async (req: Request, res: Response) => {
       return;
     }
 
-    let rf = new ReportFactory({ date_format: Options.DATE_FORMAT_EUROPE, unique_only: true });
-    rf.
-      from_csvs(
-        csvs
-      )
-      .then(
-        function() {
-          let report: Report = rf.report;
+    let rf = new ReportFactory({ unique_only: true });
+    ReportManager.add_csvs(rf, csvs)
+    .then(
+      function() {
+        let report: Report = rf.report;
+        categoriser.categorise_transactions(report.transactions);
 
-          let end_time = new Date().getTime();
+        let end_time = new Date().getTime();
 
-          report.transactions = report.transactions.sort(function(a,b) { return a.txn_date.getTime() - b.txn_date.getTime() });
+        report.transactions = report.transactions.sort(function(a,b) { return a.txn_date.getTime() - b.txn_date.getTime() });
 
-          report.transactions = report.transactions.filter(function(txn: Transaction) {
-            return txn.month >= start && txn.month <= end;
-          });
+        report.transactions = report.transactions.filter(function(txn: Transaction) {
+          return txn.month >= start && txn.month <= end;
+        });
 
-          let months: string[] = [];
+        let months: string[] = [];
 
-          var i = 0;
+        var i = 0;
 
-          while (current_mo.toDate().getTime() != end_mo.toDate().getTime()) {
-            months.push(current_mo.format('YYYYMM'));
-            current_mo.add(1, "month");
+        while (current_mo.toDate().getTime() != end_mo.toDate().getTime()) {
+          months.push(current_mo.format('YYYYMM'));
+          current_mo.add(1, "month");
 
-            if (i++>100) { break; }
-          }
-
-          let breakdown: any[] = ReportManager.generate_monthly_breakdown_frontend(report.transactions, months);
-
-          res.render('summary/view', {
-            breakdown: breakdown,
-            months: months,
-          });
+          if (i++>100) { break; }
         }
-      );
-    } else {
-      res.render('summary/choice');
-    }
+
+        let breakdown: any[] = ReportManager.generate_monthly_breakdown_frontend(report.transactions, months);
+
+        res.render('summary/view', {
+          breakdown: breakdown,
+          months: months,
+        });
+      }
+    );
+  } else {
+    res.render('summary/choice');
+  }
 }
