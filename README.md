@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/hyperbudget/hyperbudget.svg?branch=master)](https://travis-ci.org/hyperbudget/hyperbudget)
-
+ 
 # hyperbudget
 
 A budget helper.
