@@ -1,7 +1,7 @@
  
 # hyperbudget
 
-A budget helper.
+A budget helper. See also [hyperbudget-core](https://github.com/hyperbudget/hyperbudget-core), where the meat is; this is just an express backend.
 
 ## About
 
