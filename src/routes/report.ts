@@ -11,6 +11,7 @@ import * as multer from 'multer';
 import { Moment } from 'moment';
 
 import { SystemConfig } from '../lib/config/system';
+import { CSVFileManager } from '../lib/manager/csvfilemanager';
 
 let _loadFiles = async () => {
   let db: Loki = Utils.getDB();
@@ -51,7 +52,7 @@ export let report = async (req: Request, res: Response) => {
 
   let rf = new ReportFactory({ unique_only: true });
 
-  ReportManager.add_csvs(rf, csvs)
+  CSVFileManager.add_csvs(rf, csvs)
   .then(
     function() {
       let report:Report = rf.report;
@@ -152,7 +153,7 @@ export let summary = async (req: Request, res: Response) => {
     }
 
     let rf = new ReportFactory({ unique_only: true });
-    ReportManager.add_csvs(rf, csvs)
+    CSVFileManager.add_csvs(rf, csvs)
     .then(
       function() {
         let report: Report = rf.report;
