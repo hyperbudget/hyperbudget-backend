@@ -1,4 +1,4 @@
-import { ReportFactory, CSVParserManager } from "hyperbudget-core";
+import { ReportFactory, CSVParserManager } from "@hyperbudget/hyperbudget-core";
 import * as fs from 'fs';
 
 export class CSVFileManager {

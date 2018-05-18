@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { Report, ReportFactory, ReportManager, Options, Transaction, Category, Categoriser } from 'hyperbudget-core';
+import { Report, ReportFactory, ReportManager, Options, Transaction, Category, Categoriser } from '@hyperbudget/hyperbudget-core';
 import { UploadManager } from '../lib/manager/uploadmanager';
 import { Utils } from '../lib/utils';
 
