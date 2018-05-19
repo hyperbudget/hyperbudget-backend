@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { Report, ReportFactory, ReportManager, Options, Transaction, Category, Categoriser } from '@hyperbudget/hyperbudget-core';
+import { Report, ReportFactory, ReportManager, Options, Transaction, Category, Categoriser, FormattedTransaction, CategoryAmounts } from '@hyperbudget/hyperbudget-core';
 import { UploadManager } from '../lib/manager/uploadmanager';
 import { Utils } from '../lib/utils';
 
@@ -60,8 +60,8 @@ export let report = async (req: Request, res: Response) => {
       report.filter_month(month);
 
       report.transactions = report.transactions.sort(function(a,b) { return a.txn_date.getTime() - b.txn_date.getTime() });
-      let txns = ReportManager.generate_web_frontend_report(report.transactions);
-      let cats = ReportManager.generate_category_amounts_frontend(categoriser, report.transactions, report.transactions_org);
+      let txns: FormattedTransaction[] = ReportManager.generate_web_frontend_report(report.transactions);
+      let cats: CategoryAmounts = ReportManager.generate_category_amounts_frontend(categoriser, report.transactions, report.transactions_org);
 
       let nextDate = date.clone().add(1, 'month').format('YYYYMM');
       let prevDate = date.clone().subtract(1, 'month').format('YYYYMM');
