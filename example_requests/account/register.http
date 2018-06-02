@@ -1,0 +1,7 @@
+POST http://localhost:3000/account/register HTTP/1.1
+content-type: application/json
+
+{
+    "email": "errietta@errietta.me",
+    "password": "passpasspass"
+}

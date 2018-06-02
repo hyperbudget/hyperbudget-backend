@@ -1,15 +1,14 @@
 import * as express from 'express';
-import * as reportRoutes from './routes/report';
-import * as path from 'path';
-
 import * as multer from 'multer';
 import * as Loki from 'lokijs';
-
 import * as bodyParser from 'body-parser';
-
 import * as hbs from 'hbs';
 
+import * as path from 'path';
 import * as fs from 'fs';
+
+import * as reportRoutes from './routes/report';
+import * as accountRoutes from './routes/account';
 
 import { SystemConfig } from './lib/config/system';
 
@@ -70,6 +69,8 @@ class App {
     this.express.post('/report/breakdown', reportRoutes.summary);
     this.express.post('/report/upload', this.upload_middleware.single('csv'), reportRoutes.upload);
     this.express.get('/report/:month', reportRoutes.report);
+
+    this.express.post('/account/register', accountRoutes.validateRegistration, accountRoutes.register);
   }
 
   private mountHomeRoute(): void {
