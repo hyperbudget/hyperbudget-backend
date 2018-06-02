@@ -6,3 +6,4 @@ dist
 csvs/
 db/
 config.json
+.env
