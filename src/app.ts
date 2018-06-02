@@ -4,6 +4,8 @@ import * as Loki from 'lokijs';
 import * as bodyParser from 'body-parser';
 import * as hbs from 'hbs';
 
+import * as mongoose from 'mongoose';
+
 import * as path from 'path';
 import * as fs from 'fs';
 
@@ -12,15 +14,21 @@ import * as accountRoutes from './routes/account';
 
 import { SystemConfig } from './lib/config/system';
 
+import * as dotenv from 'dotenv';
+
 class App {
   public express;
   private upload_middleware;
 
   constructor() {
+    dotenv.config();
+
     this.express = express();
 
     this.express.use(bodyParser.json())
     this.express.use(bodyParser.urlencoded({ extended: true }))
+
+    this.connectDB();
 
     this.setUploadMiddleware();
     this.mountHomeRoute();
@@ -29,6 +37,11 @@ class App {
     this.setViewEngine();
 
     this.initConfig();
+  }
+
+  private connectDB(): void {
+    console.log(process.env.MONGO_CONNECTION_STRING);
+    mongoose.connect(process.env.MONGO_CONNECTION_STRING);
   }
 
   private initConfig(): void {
@@ -41,7 +54,7 @@ class App {
 
     let config = fs.readFileSync( config_path, 'utf8' );
 
-    console.log("Config initialised...", config);
+    console.log("Config initialised...");
 
     SystemConfig.config = config ? JSON.parse(config) : {};
   }
