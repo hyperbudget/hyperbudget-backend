@@ -57,6 +57,13 @@ class App {
     console.log("Config initialised...");
 
     SystemConfig.config = config ? JSON.parse(config) : {};
+
+    if (
+      !SystemConfig.config.app.token_secret
+      || SystemConfig.config.app.token_secret === 'CHANGEME'
+    ) {
+      throw new Error("Remember to copy config.json and set a webtoken secret");
+    }
   }
 
   private setUploadMiddleware(): void {

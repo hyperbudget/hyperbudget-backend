@@ -1,9 +1,11 @@
 import { Request, Response } from 'express';
 import { check, validationResult } from 'express-validator/check';
 
-import { UserModel, User, IUserModel } from '../lib/schema/user';
-
 import * as bcrypt from 'bcryptjs';
+import * as jwt from 'jsonwebtoken';
+
+import { UserModel, User, IUserModel } from '../lib/schema/user';
+import { Utils } from '../lib/utils';
 
 export const validateRegistration = [
   check('email').isEmail().custom((value) => (
@@ -72,11 +74,18 @@ export const login = (req: Request, res: Response) => {
         isPasswordCorrect ? resolve() : reject()
       ));
     }).then(
-      () => (
-        res.json({
+      () => {
+        let token = Utils.JWTSign({
+            user: user
+          },
+        );
+
+        return res.json({
           success: true,
+          token: token,
+          userId: user.id,
         })
-      ),
+      },
       () => (
         res.status(422).json({
           error: [{ msg: "Incorrect login" }]

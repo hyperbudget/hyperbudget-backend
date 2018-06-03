@@ -1,4 +1,8 @@
 {
+  "app": {
+    "token_secret": "CHANGEME",
+    "token_expiry": 2700,
+  },
   "preferences": {
     "categories": [{
       "name": "Income",
