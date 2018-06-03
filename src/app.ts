@@ -1,27 +1,35 @@
 import * as express from 'express';
-import * as reportRoutes from './routes/report';
-import * as path from 'path';
-
 import * as multer from 'multer';
 import * as Loki from 'lokijs';
-
 import * as bodyParser from 'body-parser';
-
 import * as hbs from 'hbs';
 
+import * as mongoose from 'mongoose';
+
+import * as path from 'path';
 import * as fs from 'fs';
+import * as dotenv from 'dotenv';
+
+import * as reportRoutes from './routes/report';
+import * as accountRoutes from './routes/account';
+import { authMiddleware } from './lib/middleware/authmiddleware';
 
 import { SystemConfig } from './lib/config/system';
+
 
 class App {
   public express;
   private upload_middleware;
 
   constructor() {
+    dotenv.config();
+
     this.express = express();
 
     this.express.use(bodyParser.json())
     this.express.use(bodyParser.urlencoded({ extended: true }))
+
+    this.connectDB();
 
     this.setUploadMiddleware();
     this.mountHomeRoute();
@@ -30,6 +38,11 @@ class App {
     this.setViewEngine();
 
     this.initConfig();
+  }
+
+  private connectDB(): void {
+    console.log(process.env.MONGO_CONNECTION_STRING);
+    mongoose.connect(process.env.MONGO_CONNECTION_STRING);
   }
 
   private initConfig(): void {
@@ -42,9 +55,16 @@ class App {
 
     let config = fs.readFileSync( config_path, 'utf8' );
 
-    console.log("Config initialised...", config);
+    console.log("Config initialised...");
 
     SystemConfig.config = config ? JSON.parse(config) : {};
+
+    if (
+      !SystemConfig.config.app.token_secret
+      || SystemConfig.config.app.token_secret === 'CHANGEME'
+    ) {
+      throw new Error("Remember to copy config.json and set a webtoken secret");
+    }
   }
 
   private setUploadMiddleware(): void {
@@ -70,6 +90,13 @@ class App {
     this.express.post('/report/breakdown', reportRoutes.summary);
     this.express.post('/report/upload', this.upload_middleware.single('csv'), reportRoutes.upload);
     this.express.get('/report/:month', reportRoutes.report);
+
+    this.express.post('/account/register', accountRoutes.validateRegistration, accountRoutes.register);
+    this.express.post('/account/login', accountRoutes.validateLogin, accountRoutes.login);
+
+    this.express.use('/', authMiddleware);
+
+    this.express.get('/account', accountRoutes.accountInfo);
   }
 
   private mountHomeRoute(): void {

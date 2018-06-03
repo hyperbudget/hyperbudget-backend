@@ -1,4 +1,3 @@
- 
 # hyperbudget
 
 A budget helper. See also [hyperbudget-core](https://github.com/hyperbudget/hyperbudget-core), where the meat is; this is just an express backend.
@@ -19,10 +18,11 @@ This is very early code. The behaviour documented here may change or this may di
 
 ## Install
 
-```
-npm install
-```
-
+* Get mongodb
+* Set up .env with your mongodb connection string
+`MONGO_CONNECTION_STRING='mongodb://localhost:27017/hyperbudget-dev'`
+* Set the JWT secret in `config.json`
+* Run `npm install`
 
 
 ## Configure
@@ -36,9 +36,9 @@ In general, you want at the very least to keep the "income", "expenditure", and 
 
 The port and host can be configured in the `BUDGET_PORT` and `BUDGET_HOST` env vars.
 
-`node dist/index.js`
+`npm start`
 
-# Todo 
+# Todo
 
 * Trello https://trello.com/b/Xsc32l6a/hyperbudget
 * GH https://github.com/errietta/hyperbudget/issues
