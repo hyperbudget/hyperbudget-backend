@@ -3,6 +3,8 @@ import { check, validationResult } from 'express-validator/check';
 
 import { UserModel, User, IUserModel } from '../lib/schema/user';
 
+import * as bcrypt from 'bcryptjs';
+
 export const validateRegistration = [
   check('email').custom((value) => (
     UserModel.findOne({ email: value })
@@ -24,13 +26,17 @@ export const register = (req: Request, res: Response) => {
   let { email, password, firstname } = req.body;
   console.log(email);
 
-  UserModel.create({
-    email: email,
-    password: password,
-    firstName: firstname,
-  }).then(() => UserModel.findOne({
+  bcrypt.hash(password, 10)
+  .then((hashed_password) => UserModel.create({
+      email: email,
+      password: hashed_password,
+      firstName: firstname,
+    })
+  )
+  .then(() => UserModel.findOne({
     email: email
-  })).then((user: User) => {
+  }))
+  .then((user: User) => {
     console.log("found user", user);
     res.json({
       success: 1,
