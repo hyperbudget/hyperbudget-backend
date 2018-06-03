@@ -60,7 +60,6 @@ export const login = (req: Request, res: Response) => {
   }
 
   let { email, password } = req.body;
-  console.log(email);
 
   return UserModel
   .findOne({
@@ -75,24 +74,22 @@ export const login = (req: Request, res: Response) => {
       return bcrypt.compare(password, user.password).then((isPasswordCorrect: boolean) => (
         isPasswordCorrect ? resolve() : reject()
       ));
-    }).then(
-      () => {
-        let token = Utils.JWTSign({
-            user: user.forAPI(),
-          },
-        );
+    })
+    .then(() => {
+      let token = Utils.JWTSign({
+        user: user.forAPI(),
+      });
 
-        return res.json({
-          success: true,
-          token: token,
-          userId: user.id,
-        })
-      },
-      () => (
-        res.status(422).json({
-          error: [{ msg: "Incorrect login" }]
-        })
-      )
-    )
+      return res.json({
+        success: true,
+        token: token,
+        userId: user.id,
+      })
+    },
+    () => (
+      res.status(422).json({
+        error: [{ msg: "Incorrect login" }]
+      })
+    ))
   })
 }
