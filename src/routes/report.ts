@@ -29,7 +29,6 @@ let _loadFiles = async () => {
 
 export let index = function(req: Request, res: Response) {
   let now = moment().format('YYYYMM');
-  console.log("from router", SystemConfig.config);
   res.redirect(`/report/${now}`);
 };
 

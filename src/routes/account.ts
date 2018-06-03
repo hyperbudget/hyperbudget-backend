@@ -31,7 +31,6 @@ export const register = (req: Request, res: Response) => {
   }
 
   let { email, password, firstname } = req.body;
-  console.log(email);
 
   bcrypt.hash(password, 10)
   .then((hashed_password) => UserModel.create({
@@ -44,7 +43,6 @@ export const register = (req: Request, res: Response) => {
     email: email
   }))
   .then((user: User) => {
-    console.log("found user", user);
     res.json({
       success: true,
       userId: user.id,
