@@ -62,9 +62,11 @@ export const login = (req: Request, res: Response) => {
   let { email, password } = req.body;
   console.log(email);
 
-  return UserModel.findOne({
+  return UserModel
+  .findOne({
     email: email
-  }).then((user: User) => {
+  })
+  .then((user: User) => {
     return new Promise((resolve, reject) => {
       if (!user) {
         return reject();
@@ -76,7 +78,7 @@ export const login = (req: Request, res: Response) => {
     }).then(
       () => {
         let token = Utils.JWTSign({
-            user: user
+            user: user.forAPI(),
           },
         );
 
@@ -91,6 +93,6 @@ export const login = (req: Request, res: Response) => {
           error: [{ msg: "Incorrect login" }]
         })
       )
-    );
-  });
+    )
+  })
 }
