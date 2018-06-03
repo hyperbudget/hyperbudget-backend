@@ -6,7 +6,7 @@ import { UserModel, User, IUserModel } from '../lib/schema/user';
 import * as bcrypt from 'bcryptjs';
 
 export const validateRegistration = [
-  check('email').custom((value) => (
+  check('email').isEmail().custom((value) => (
     UserModel.findOne({ email: value })
     .then((user: User) => (
       user ? Promise.reject('email in use') : Promise.resolve(true))
@@ -14,6 +14,11 @@ export const validateRegistration = [
   )),
   check('password').isLength({ min: 8 }),
   check('firstname').optional().isAlphanumeric(),
+];
+
+export const validateLogin = [
+  check('email').isEmail(),
+  check('password'),
 ];
 
 export const register = (req: Request, res: Response) => {
@@ -39,8 +44,44 @@ export const register = (req: Request, res: Response) => {
   .then((user: User) => {
     console.log("found user", user);
     res.json({
-      success: 1,
+      success: true,
       userId: user.id,
     });
   });
 };
+
+export const login = (req: Request, res: Response) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ error: errors.array() });
+  }
+
+  let { email, password } = req.body;
+  console.log(email);
+
+  return UserModel.findOne({
+    email: email
+  }).then((user: User) => {
+    return new Promise((resolve, reject) => {
+      if (!user) {
+        return reject();
+      }
+
+      return bcrypt.compare(password, user.password).then((isPasswordCorrect: boolean) => (
+        isPasswordCorrect ? resolve() : reject()
+      ));
+    }).then(
+      () => (
+        res.json({
+          success: true,
+        })
+      ),
+      () => (
+        res.status(422).json({
+          error: [{ msg: "Incorrect login" }]
+        })
+      )
+    );
+  });
+}

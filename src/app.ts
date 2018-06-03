@@ -84,6 +84,7 @@ class App {
     this.express.get('/report/:month', reportRoutes.report);
 
     this.express.post('/account/register', accountRoutes.validateRegistration, accountRoutes.register);
+    this.express.post('/account/login', accountRoutes.validateLogin, accountRoutes.login);
   }
 
   private mountHomeRoute(): void {
