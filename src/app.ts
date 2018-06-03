@@ -33,9 +33,10 @@ class App {
 
     this.setUploadMiddleware();
     this.mountHomeRoute();
-    this.mountRoutes();
     this.setStatic();
     this.setViewEngine();
+
+    this.mountRoutes();
 
     this.initConfig();
   }
