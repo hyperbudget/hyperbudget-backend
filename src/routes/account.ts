@@ -93,3 +93,9 @@ export const login = (req: Request, res: Response) => {
     ))
   })
 }
+
+export const accountInfo = (req: Request, res: Response) => {
+  res.json({
+    authenticated: true
+  });
+};

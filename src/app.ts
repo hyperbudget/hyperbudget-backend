@@ -8,13 +8,14 @@ import * as mongoose from 'mongoose';
 
 import * as path from 'path';
 import * as fs from 'fs';
+import * as dotenv from 'dotenv';
 
 import * as reportRoutes from './routes/report';
 import * as accountRoutes from './routes/account';
+import { authMiddleware } from './lib/middleware/authmiddleware';
 
 import { SystemConfig } from './lib/config/system';
 
-import * as dotenv from 'dotenv';
 
 class App {
   public express;
@@ -92,6 +93,10 @@ class App {
 
     this.express.post('/account/register', accountRoutes.validateRegistration, accountRoutes.register);
     this.express.post('/account/login', accountRoutes.validateLogin, accountRoutes.login);
+
+    this.express.use('/', authMiddleware);
+
+    this.express.get('/account', accountRoutes.accountInfo);
   }
 
   private mountHomeRoute(): void {
