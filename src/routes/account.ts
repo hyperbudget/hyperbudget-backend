@@ -1,12 +1,17 @@
 import { Request, Response } from 'express';
 import { check, validationResult } from 'express-validator/check';
 
-import { UserModel, User } from '../lib/schema/user';
+import { UserModel, User, IUserModel } from '../lib/schema/user';
 
 export const validateRegistration = [
-  check('email').isEmail(),
+  check('email').custom((value) => (
+    UserModel.findOne({ email: value })
+    .then((user: User) => (
+      user ? Promise.reject('email in use') : Promise.resolve(true))
+    )
+  )),
   check('password').isLength({ min: 8 }),
-  check('firstname').isAlphanumeric(),
+  check('firstname').optional().isAlphanumeric(),
 ];
 
 export const register = (req: Request, res: Response) => {
@@ -27,10 +32,9 @@ export const register = (req: Request, res: Response) => {
     email: email
   })).then((user: User) => {
     console.log("found user", user);
-  });
-
-  res.json({
-    success: 1,
-    userId: 1,
+    res.json({
+      success: 1,
+      userId: user.id,
+    });
   });
 };
