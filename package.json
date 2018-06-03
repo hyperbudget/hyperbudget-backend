@@ -15,6 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "@hyperbudget/hyperbudget-core": "latest",
+    "@types/jsonwebtoken": "^7.2.7",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.2",
     "bootstrap": "^4.0.0",
@@ -33,6 +34,7 @@
     "handlebars": "^4.0.11",
     "hbs": "^4.0.1",
     "jquery": "^3.3.1",
+    "jsonwebtoken": "^8.2.2",
     "lokijs": "^1.5.1",
     "moment": "^2.20.1",
     "mongoose": "^5.1.3",
