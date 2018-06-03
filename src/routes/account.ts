@@ -95,7 +95,16 @@ export const login = (req: Request, res: Response) => {
 }
 
 export const accountInfo = (req: Request, res: Response) => {
-  res.json({
-    authenticated: true
+  let decoded = jwt.decode(req.get('x-jwt'));
+
+  UserModel.findById(decoded['user']['id']).then((user: User) => {
+    if (!user) {
+      throw new Error("The user id stored in session does not exist");
+    }
+
+    res.json({
+      authenticated: true,
+      user: user.forAPI(),
+    });
   });
 };
