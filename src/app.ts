@@ -60,6 +60,14 @@ class App {
 
     SystemConfig.config = config ? JSON.parse(config) : {};
 
+    if (!SystemConfig.config.app.token_secret) {
+      SystemConfig.config.app.token_secret = process.env.TOKEN_SECRET;
+    }
+
+    if (!SystemConfig.config.app.token_expiry) {
+      SystemConfig.config.app.token_secret = process.env.TOKEN_EXPIRY;
+    }
+
     if (
       !SystemConfig.config.app.token_secret
       || SystemConfig.config.app.token_secret === 'CHANGEME'
