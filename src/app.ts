@@ -42,7 +42,6 @@ class App {
   }
 
   private connectDB(): void {
-    console.log(process.env.MONGODB_URI);
     mongoose.connect(process.env.MONGODB_URI);
   }
 
@@ -67,9 +66,6 @@ class App {
     if (process.env.TOKEN_EXPIRY) {
       SystemConfig.config.app.token_expiry = +process.env.TOKEN_EXPIRY;
     }
-
-    console.log(process.env.TOKEN_SECRET);
-    console.log(SystemConfig.config.app.token_secret);
 
     if (
       !SystemConfig.config.app.token_secret
