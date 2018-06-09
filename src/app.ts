@@ -42,8 +42,8 @@ class App {
   }
 
   private connectDB(): void {
-    console.log(process.env.MONGO_CONNECTION_STRING);
-    mongoose.connect(process.env.MONGO_CONNECTION_STRING);
+    console.log(process.env.MONGODB_URI);
+    mongoose.connect(process.env.MONGODB_URI);
   }
 
   private initConfig(): void {

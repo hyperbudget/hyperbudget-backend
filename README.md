@@ -20,7 +20,7 @@ This is very early code. The behaviour documented here may change or this may di
 
 * Get mongodb
 * Set up .env with your mongodb connection string
-`MONGO_CONNECTION_STRING='mongodb://localhost:27017/hyperbudget-dev'`
+`MONGODB_URI='mongodb://localhost:27017/hyperbudget-dev'`
 * Set the JWT secret in `config.json`
 * Run `npm install`
 
