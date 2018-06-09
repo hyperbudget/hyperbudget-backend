@@ -60,13 +60,16 @@ class App {
 
     SystemConfig.config = config ? JSON.parse(config) : {};
 
-    if (!SystemConfig.config.app.token_secret) {
+    if (process.env.TOKEN_SECRET) {
       SystemConfig.config.app.token_secret = process.env.TOKEN_SECRET;
     }
 
-    if (!SystemConfig.config.app.token_expiry) {
-      SystemConfig.config.app.token_expiry = +process.env.TOKEN_EXPIRY || 2700;
+    if (process.env.TOKEN_EXPIRY) {
+      SystemConfig.config.app.token_expiry = +process.env.TOKEN_EXPIRY;
     }
+
+    console.log(process.env.TOKEN_SECRET);
+    console.log(SystemConfig.config.app.token_secret);
 
     if (
       !SystemConfig.config.app.token_secret
