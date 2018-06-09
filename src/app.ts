@@ -65,7 +65,7 @@ class App {
     }
 
     if (!SystemConfig.config.app.token_expiry) {
-      SystemConfig.config.app.token_secret = process.env.TOKEN_EXPIRY;
+      SystemConfig.config.app.token_expiry = +process.env.TOKEN_EXPIRY || 2700;
     }
 
     if (
