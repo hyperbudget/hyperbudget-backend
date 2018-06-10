@@ -15,7 +15,7 @@ import * as accountRoutes from './routes/account';
 import { authMiddleware } from './lib/middleware/authmiddleware';
 
 import { SystemConfig } from './lib/config/system';
-
+import * as sslRedirect from 'heroku-ssl-redirect';
 
 class App {
   public express;
@@ -25,6 +25,8 @@ class App {
     dotenv.config();
 
     this.express = express();
+
+    this.setSSL();
 
     this.express.use(bodyParser.json())
     this.express.use(bodyParser.urlencoded({ extended: true }))
@@ -39,6 +41,13 @@ class App {
     this.mountRoutes();
 
     this.initConfig();
+  }
+
+  private setSSL() {
+    this.express.use(sslRedirect([
+      'staging',
+      'production'
+      ]));
   }
 
   private connectDB(): void {
