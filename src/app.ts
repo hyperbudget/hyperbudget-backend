@@ -17,6 +17,8 @@ import { authMiddleware } from './lib/middleware/authmiddleware';
 import { SystemConfig } from './lib/config/system';
 import * as sslRedirect from 'heroku-ssl-redirect';
 
+import * as cors from 'cors';
+
 class App {
   public express;
   private upload_middleware;
@@ -34,6 +36,8 @@ class App {
     this.connectDB();
 
     this.setUploadMiddleware();
+    this.setUpCORS();
+
     this.mountHomeRoute();
     this.setStatic();
     this.setViewEngine();
@@ -98,6 +102,11 @@ class App {
     this.express.set('view engine', 'hbs');
     this.express.set('views', path.join(__dirname, '/../src/views'));
     hbs.registerPartials(__dirname + '/../src/views/partials');
+  }
+
+  private setUpCORS(): void {
+    this.express.use(cors());
+    this.express.options('*', cors());
   }
 
   private mountRoutes(): void {
