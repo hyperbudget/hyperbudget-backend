@@ -1,0 +1,15 @@
+branch-defaults:
+  master:
+    environment: HyperbudgetBackend-env
+  staging:
+    environment: HyperbudgetBackend-env
+  dev:
+    environment: HyperbudgetBackend-env
+  circleci:
+    environment: HyperbudgetBackend-env
+global:
+  application_name: hyperbudget-backend
+  default_platform: 64bit Amazon Linux 2017.03 v4.5 running Node 8.10
+  default_region: eu-central-1
+deploy:
+  artifact: dist/hyperbudget-backend.zip

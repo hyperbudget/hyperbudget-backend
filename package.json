@@ -6,6 +6,8 @@
   "scripts": {
     "test": "mocha -r ts-node/register t/**/*.spec.ts",
     "postinstall": "tsc && webpack && mkdir -p db/ && mkdir -p csvs/",
+    "build": "tsc && webpack && mkdir -p db/ && mkdir -p csvs/",
+    "dist": "sh ./scripts/dist.sh",
     "start": "node dist/index.js"
   },
   "engines": {
