@@ -124,6 +124,7 @@ class App {
 
     this.express.get('/account', accountRoutes.accountInfo);
     this.express.post('/account/update-categories', categoryRoutes.validateUpdateCategories, categoryRoutes.updateCategories);
+    this.express.post('/account/get-categories', categoryRoutes.validateGetCategories, categoryRoutes.getCategories);
   }
 
   private mountHomeRoute(): void {

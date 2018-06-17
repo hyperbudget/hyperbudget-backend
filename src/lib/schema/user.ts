@@ -8,7 +8,7 @@ export interface User {
   password?: string;
   preferences?: {
     categories: Category[],
-    categories_encrypted: String,
+    categories_encrypted: string,
   };
 
   forAPI(): void;
@@ -16,19 +16,24 @@ export interface User {
 
 export interface IUserModel extends User, Document {}
 
-export const UserSchema: Schema = new Schema({
-  email: String,
-  password: String,
-  firstName: String,
-  createdAt: {
-    type: Date,
-    default: Date.now,
+export const UserSchema: Schema = new Schema(
+  {
+    email: String,
+    password: String,
+    firstName: String,
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+    lastLogin: Date,
+    preferences: {
+      categories_encrypted: String,
+    }
   },
-  lastLogin: Date,
-  preferences: {
-    categories_encrypted: String,
+  {
+    minimize: false,
   }
-});
+);
 
 UserSchema.methods.forAPI = function () {
   return {

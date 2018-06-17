@@ -3,6 +3,7 @@ Content-Type: application/json
 x-jwt: JWT_HERE
 
 {
+  "password": "mypass"
   "categories": [{
     "name": "Income",
     "category_rules": {

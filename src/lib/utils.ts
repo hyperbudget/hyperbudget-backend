@@ -43,7 +43,7 @@ export class Utils {
     return new Promise((resolve, reject) => {
       UserModel.findById(decoded['user']['id']).then((user: User) => {
         if (!user) {
-          reject();
+          reject("no such user");
         }
 
         resolve(user);

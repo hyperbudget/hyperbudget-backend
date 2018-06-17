@@ -36,6 +36,7 @@ export const register = (req: Request, res: Response) => {
       email: email,
       password: hashed_password,
       firstName: firstname,
+      preferences: {},
     })
   )
   .then(() => UserModel.findOne({
