@@ -8,6 +8,7 @@ export interface User {
   password?: string;
   preferences?: {
     categories: Category[],
+    categories_encrypted: String,
   };
 
   forAPI(): void;
@@ -25,7 +26,7 @@ export const UserSchema: Schema = new Schema({
   },
   lastLogin: Date,
   preferences: {
-    categories: [{}],
+    categories_encrypted: String,
   }
 });
 

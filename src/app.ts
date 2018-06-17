@@ -123,7 +123,7 @@ class App {
     this.express.use('/', authMiddleware);
 
     this.express.get('/account', accountRoutes.accountInfo);
-    this.express.post('/account/update-categories', categoryRoutes.updateCategories);
+    this.express.post('/account/update-categories', categoryRoutes.validateUpdateCategories, categoryRoutes.updateCategories);
   }
 
   private mountHomeRoute(): void {
