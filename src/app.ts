@@ -1,6 +1,5 @@
 import * as express from 'express';
 import * as multer from 'multer';
-import * as Loki from 'lokijs';
 import * as bodyParser from 'body-parser';
 import * as hbs from 'hbs';
 
@@ -10,14 +9,15 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as dotenv from 'dotenv';
 
-import * as reportRoutes from './routes/report';
-import * as accountRoutes from './routes/account';
-import { authMiddleware } from './lib/middleware/authmiddleware';
+import * as sslRedirect from 'heroku-ssl-redirect';
+import * as cors from 'cors';
 
 import { SystemConfig } from './lib/config/system';
-import * as sslRedirect from 'heroku-ssl-redirect';
+import { authMiddleware } from './lib/middleware/authmiddleware';
 
-import * as cors from 'cors';
+import * as reportRoutes from './routes/report';
+import * as accountRoutes from './routes/account';
+import * as categoryRoutes from './routes/encrypted/categories';
 
 class App {
   public express;
@@ -123,7 +123,7 @@ class App {
     this.express.use('/', authMiddleware);
 
     this.express.get('/account', accountRoutes.accountInfo);
-    this.express.post('/account/update-categories', accountRoutes.updateCategories);
+    this.express.post('/account/update-categories', categoryRoutes.updateCategories);
   }
 
   private mountHomeRoute(): void {

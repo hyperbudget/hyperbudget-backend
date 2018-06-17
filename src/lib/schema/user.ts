@@ -34,7 +34,6 @@ UserSchema.methods.forAPI = function () {
     id: this.id,
     email: this.email,
     firstName: this.firstName,
-    preferences: this.preferences,
   };
 };
 
