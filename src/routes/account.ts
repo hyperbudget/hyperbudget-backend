@@ -93,16 +93,30 @@ export const login = (req: Request, res: Response) => {
 }
 
 export const accountInfo = (req: Request, res: Response) => {
-  let decoded = jwt.decode(req.get('x-jwt'));
+  let token = req.get('x-jwt');
 
-  UserModel.findById(decoded['user']['id']).then((user: User) => {
-    if (!user) {
-      throw new Error("The user id stored in session does not exist");
-    }
-
+  Utils.UserFromJWT(token).then((user: User) => {
     res.json({
       authenticated: true,
       user: user.forAPI(),
     });
+  });
+};
+
+
+export const updateCategories = (req: Request, res: Response) => {
+  console.log(req.body.categories);
+  Utils.UserFromJWT(req.get('x-jwt')).then((user: IUserModel) => {
+    console.log(user);
+    user.set({
+      firstName: 'whataf',
+      preferences: { categories: req.body.categories },
+    });
+    user.preferences.categories.push(req.body.categories);
+    user.markModified('preferences.categories');
+    user.save().then(
+      () => res.json({ ok: true }),
+      (err) => { console.log(err) }
+    )
   });
 };
