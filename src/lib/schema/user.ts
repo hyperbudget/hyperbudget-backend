@@ -1,10 +1,14 @@
 import { Document, Schema, Model, model } from 'mongoose';
+import { Category } from '@hyperbudget/hyperbudget-core';
 
 export interface User {
   id?: any;
   email: string;
   firstName: string;
   password?: string;
+  preferences?: {
+    categories: Category[],
+  };
 
   forAPI(): void;
 };
@@ -20,6 +24,9 @@ export const UserSchema: Schema = new Schema({
     default: Date.now,
   },
   lastLogin: Date,
+  preferences: {
+    categories: [{}],
+  }
 });
 
 UserSchema.methods.forAPI = function () {
@@ -27,6 +34,7 @@ UserSchema.methods.forAPI = function () {
     id: this.id,
     email: this.email,
     firstName: this.firstName,
+    preferences: this.preferences,
   };
 };
 
