@@ -1,7 +1,5 @@
 import * as express from 'express';
-import * as multer from 'multer';
 import * as bodyParser from 'body-parser';
-import * as hbs from 'hbs';
 
 import * as mongoose from 'mongoose';
 
@@ -15,13 +13,11 @@ import * as cors from 'cors';
 import { SystemConfig } from './lib/config/system';
 import { authMiddleware } from './lib/middleware/authmiddleware';
 
-import * as reportRoutes from './routes/report';
-import * as accountRoutes from './routes/account';
 import * as categoryRoutes from './routes/encrypted/categories';
+import * as accountRoutes from './routes/account';
 
 class App {
   public express;
-  private upload_middleware;
 
   constructor() {
     dotenv.config();
@@ -34,14 +30,9 @@ class App {
     this.express.use(bodyParser.urlencoded({ extended: true }))
 
     this.connectDB();
-
-    this.setUploadMiddleware();
     this.setUpCORS();
 
     this.mountHomeRoute();
-    this.setStatic();
-    this.setViewEngine();
-
     this.mountRoutes();
 
     this.initConfig();
@@ -51,7 +42,7 @@ class App {
     this.express.use(sslRedirect([
       'staging',
       'production'
-      ]));
+    ]));
   }
 
   private connectDB(): void {
@@ -88,35 +79,20 @@ class App {
     }
   }
 
-  private setUploadMiddleware(): void {
-    const upload = multer({ dest: path.join(__dirname, '/../csvs/') }); // multer configuration
-    this.upload_middleware = upload;
-  }
-
-  private setStatic(): void {
-    this.express.use(express.static(path.join(__dirname, '/../src/public')));
-    this.express.use(express.static(path.join(__dirname, '/../dist/public')));
-  }
-
-  private setViewEngine(): void {
-    this.express.set('view engine', 'hbs');
-    this.express.set('views', path.join(__dirname, '/../src/views'));
-    hbs.registerPartials(__dirname + '/../src/views/partials');
-  }
-
   private setUpCORS(): void {
     this.express.use(cors());
     this.express.options('*', cors());
   }
 
-  private mountRoutes(): void {
-    this.express.get('/report/', reportRoutes.index);
-    this.express.get('/report/remote', reportRoutes.remote);
-    this.express.get('/report/breakdown', reportRoutes.summary);
-    this.express.post('/report/breakdown', reportRoutes.summary);
-    this.express.post('/report/upload', this.upload_middleware.single('csv'), reportRoutes.upload);
-    this.express.get('/report/:month', reportRoutes.report);
+  private mountHomeRoute(): void {
+    const router = express.Router();
+    router.get('/', (req, res) => {
+      res.json({ ok: true });
+    });
+    this.express.use('/', router);
+  }
 
+  private mountRoutes(): void {
     this.express.post('/account/register', accountRoutes.validateRegistration, accountRoutes.register);
     this.express.post('/account/login', accountRoutes.validateLogin, accountRoutes.login);
 
@@ -125,14 +101,6 @@ class App {
     this.express.get('/account', accountRoutes.accountInfo);
     this.express.post('/account/update-categories', categoryRoutes.validateUpdateCategories, categoryRoutes.updateCategories);
     this.express.post('/account/get-categories', categoryRoutes.validateGetCategories, categoryRoutes.getCategories);
-  }
-
-  private mountHomeRoute(): void {
-    const router = express.Router();
-    router.get('/', (req, res) => {
-      res.redirect('/report/');
-    });
-    this.express.use('/', router);
   }
 }
 
