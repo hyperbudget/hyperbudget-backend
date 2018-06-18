@@ -14,7 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@hyperbudget/hyperbudget-core": "latest",
+    "@hyperbudget/hyperbudget-core": "^2.5.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.2",
     "compression": "^1.7.1",
