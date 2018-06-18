@@ -6,6 +6,8 @@ import { IUserModel } from '../../lib/schema/user';
 
 import * as crypto from '../../lib/crypto';
 
+import { validate_categories } from '@hyperbudget/hyperbudget-core';
+
 export const validateUpdateCategories = [
   check('categories').exists(),
   check('password').isLength({ min: 8 }),
@@ -20,6 +22,25 @@ export const updateCategories = (req: Request, res: Response) => {
 
   if (!errors.isEmpty()) {
     return res.status(422).json({ error: errors.array() });
+  }
+  /*
+  [{
+    "location": "body",
+    "param": "password",
+    "msg: "Invalid value"
+  }] */
+
+  let cat_errors: { id: string, idx: number, errors: string[] }[] =
+    validate_categories(req.body.categories);
+
+  if (cat_errors.length > 0) {
+    return res.status(422).json({
+      error: [{
+        "location": "body",
+        "param": "categories",
+        "msg": cat_errors
+      }]
+    })
   }
 
   Utils.UserFromJWT(req.get('x-jwt')).then(
