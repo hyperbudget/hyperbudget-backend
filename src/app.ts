@@ -9,6 +9,7 @@ import * as dotenv from 'dotenv';
 
 import * as sslRedirect from 'heroku-ssl-redirect';
 import * as cors from 'cors';
+import * as morgan from 'morgan';
 
 import { SystemConfig } from './lib/config/system';
 import { authMiddleware } from './lib/middleware/authmiddleware';
@@ -29,6 +30,8 @@ class App {
 
     this.express.use(bodyParser.json())
     this.express.use(bodyParser.urlencoded({ extended: true }))
+
+    this.express.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
 
     this.connectDB();
     this.setUpCORS();
