@@ -74,12 +74,9 @@ export const updateTransactions = (req: Request, res: Response) => {
 export const getTransactions = (req: Request, res: Response) => {
   const errors = validationResult(req);
 
-  console.log('wut');
   if (!errors.isEmpty()) {
     return res.status(422).json({ error: errors.array() });
   }
-
-  console.log('???');
 
   Utils.UserFromJWT(req.get('x-jwt')).then((user: IUserModel) => {
     let transactions_encrypted: string = user.data.transactions_encrypted;
@@ -99,10 +96,10 @@ export const getTransactions = (req: Request, res: Response) => {
       () => {
         return res.status(500).json({
           ok: false,
-          error: {
+          error: [{
             type: 'decryption',
-            message: 'Could not decrypt transactions, did you give your transaction password correctly?',
-          }
+            msg: 'Could not decrypt transactions, did you give your transaction password correctly?',
+          }]
         })
       }
     )

@@ -100,10 +100,10 @@ export const getCategories = (req: Request, res: Response) => {
       () => {
         return res.status(500).json({
           ok: false,
-          error: {
+          error: [{
             type: 'decryption',
-            message: 'Could not decrypt preferences, did you give your transaction password correctly?',
-          }
+            msg: 'Could not decrypt preferences, did you give your transaction password correctly?',
+          }]
         })
       }
     )
