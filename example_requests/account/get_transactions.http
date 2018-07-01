@@ -1,0 +1,7 @@
+POST http://0.0.0.0:3000/account/transactions/list
+Content-Type: application/json
+x-jwt: JWT-HERE
+
+{
+  "password": "mypassword"
+}

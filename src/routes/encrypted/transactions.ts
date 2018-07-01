@@ -6,52 +6,46 @@ import { IUserModel } from '../../lib/schema/user';
 
 import * as crypto from '../../lib/crypto';
 
-import { validate_categories } from '@hyperbudget/hyperbudget-core';
+import { validate_transactions } from '@hyperbudget/hyperbudget-core';
 
-export const validateUpdateCategories = [
-  check('categories').exists(),
+export const validateUpdateTransactions = [
+  check('transactions').exists(),
   check('password').isLength({ min: 8 }),
 ];
 
-export const validateGetCategories = [
+export const validateGetTransactions = [
   check('password').isLength({ min: 8 }),
 ];
 
-export const updateCategories = (req: Request, res: Response) => {
+export const updateTransactions = (req: Request, res: Response) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
     return res.status(422).json({ error: errors.array() });
   }
-  /*
-  [{
-    "location": "body",
-    "param": "password",
-    "msg: "Invalid value"
-  }] */
 
-  let cat_errors: { id: string, idx: number, errors: string[] }[] =
-    validate_categories(req.body.categories);
+  let txn_errors: { id: string, idx: number, errors: string[] }[] =
+    validate_transactions(req.body.transactions);
 
-  if (cat_errors.length > 0) {
+  if (txn_errors.length > 0) {
     return res.status(422).json({
       error: [{
         "location": "body",
-        "param": "categories",
-        "msg": cat_errors
+        "param": "transactions",
+        "msg": txn_errors
       }]
     })
   }
 
   Utils.UserFromJWT(req.get('x-jwt')).then(
     (user: IUserModel) => {
-      let stringified = JSON.stringify(req.body.categories);
+      let stringified = JSON.stringify(req.body.transactions);
       let password = req.body.password;
 
       crypto.encrypt(stringified, [password]).then(
         (encrypted: string) => {
           user.set({
-            preferences: { categories_encrypted: encrypted },
+            data: { transactions_encrypted: encrypted },
           });
           user.save().then(
             () => res.json({ ok: true }),
@@ -77,24 +71,29 @@ export const updateCategories = (req: Request, res: Response) => {
   )
 };
 
-export const getCategories = (req: Request, res: Response) => {
+export const getTransactions = (req: Request, res: Response) => {
   const errors = validationResult(req);
 
+  console.log('wut');
   if (!errors.isEmpty()) {
     return res.status(422).json({ error: errors.array() });
   }
 
-  Utils.UserFromJWT(req.get('x-jwt')).then((user: IUserModel) => {
-    let categories_encrypted: string = user.preferences.categories_encrypted;
+  console.log('???');
 
-    if (!categories_encrypted) {
-      return res.status(200).json({ categories: [] });
+  Utils.UserFromJWT(req.get('x-jwt')).then((user: IUserModel) => {
+    let transactions_encrypted: string = user.data.transactions_encrypted;
+
+    console.log(transactions_encrypted);
+
+    if (!transactions_encrypted) {
+      return res.status(200).json({ transactions: [] });
     }
 
-    crypto.decrypt(categories_encrypted, req.body.password).then(
+    crypto.decrypt(transactions_encrypted, req.body.password).then(
       (decrypted: string) => {
         return res.status(200).json({
-          categories: JSON.parse(decrypted)
+          transactions: JSON.parse(decrypted)
         });
       },
       () => {
@@ -102,7 +101,7 @@ export const getCategories = (req: Request, res: Response) => {
           ok: false,
           error: {
             type: 'decryption',
-            message: 'Could not decrypt preferences, did you give your transaction password correctly?',
+            message: 'Could not decrypt transactions, did you give your transaction password correctly?',
           }
         })
       }

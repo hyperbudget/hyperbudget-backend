@@ -14,6 +14,7 @@ import { SystemConfig } from './lib/config/system';
 import { authMiddleware } from './lib/middleware/authmiddleware';
 
 import * as categoryRoutes from './routes/encrypted/categories';
+import * as transactionRoutes from './routes/encrypted/transactions';
 import * as accountRoutes from './routes/account';
 
 class App {
@@ -99,8 +100,10 @@ class App {
     this.express.use('/', authMiddleware);
 
     this.express.get('/account', accountRoutes.accountInfo);
-    this.express.post('/account/update-categories', categoryRoutes.validateUpdateCategories, categoryRoutes.updateCategories);
-    this.express.post('/account/get-categories', categoryRoutes.validateGetCategories, categoryRoutes.getCategories);
+    this.express.post('/account/categories/update', categoryRoutes.validateUpdateCategories, categoryRoutes.updateCategories);
+    this.express.post('/account/categories/list', categoryRoutes.validateGetCategories, categoryRoutes.getCategories);
+    this.express.post('/account/transactions/update', transactionRoutes.validateUpdateTransactions, transactionRoutes.updateTransactions);
+    this.express.post('/account/transactions/list', transactionRoutes.validateGetTransactions, transactionRoutes.getTransactions);
   }
 }
 

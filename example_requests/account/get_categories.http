@@ -1,4 +1,4 @@
-POST http://0.0.0.0:3000/account/get-categories
+POST http://0.0.0.0:3000/account/categories/list
 Content-Type: application/json
 x-jwt: JWT-HERE
 

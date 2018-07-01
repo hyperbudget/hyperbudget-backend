@@ -1,5 +1,5 @@
 import { Document, Schema, Model, model } from 'mongoose';
-import { Category } from '@hyperbudget/hyperbudget-core';
+import { Category, Transaction } from '@hyperbudget/hyperbudget-core';
 
 export interface User {
   id?: any;
@@ -10,6 +10,10 @@ export interface User {
     categories: Category[],
     categories_encrypted: string,
   };
+  data?: {
+    transactions?: Transaction[],
+    transactions_encrypted?: string,
+  }
 
   forAPI(): void;
 };
@@ -28,7 +32,10 @@ export const UserSchema: Schema = new Schema(
     lastLogin: Date,
     preferences: {
       categories_encrypted: String,
-    }
+    },
+    data: {
+      transactions_encrypted: String,
+    },
   },
   {
     minimize: false,
