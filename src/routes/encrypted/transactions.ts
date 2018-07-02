@@ -81,8 +81,6 @@ export const getTransactions = (req: Request, res: Response) => {
   Utils.UserFromJWT(req.get('x-jwt')).then((user: IUserModel) => {
     let transactions_encrypted: string = user.data.transactions_encrypted;
 
-    console.log(transactions_encrypted);
-
     if (!transactions_encrypted) {
       return res.status(200).json({ transactions: [] });
     }
