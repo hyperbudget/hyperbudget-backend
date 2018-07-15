@@ -28,7 +28,10 @@ class App {
 
     this.setSSL();
 
-    this.express.use(bodyParser.json())
+    this.express.use(bodyParser.json({
+      limit: '30mb',
+    }));
+
     this.express.use(bodyParser.urlencoded({ extended: true }))
 
     this.express.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
