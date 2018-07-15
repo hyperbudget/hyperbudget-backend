@@ -6,9 +6,9 @@ import { IUserModel } from '../../lib/schema/user';
 
 import * as crypto from '../../lib/crypto';
 
-import { validate_categories } from '@hyperbudget/hyperbudget-core';
+import { validate_categories, Category } from '@hyperbudget/hyperbudget-core';
 
-const defaultCategories = require('../../../default_categories.json');
+const defaultCategories: Category[] = require('../../../default_categories.json');
 
 export const validateUpdateCategories = [
   check('categories').exists(),
@@ -90,6 +90,19 @@ export const getCategories = (req: Request, res: Response) => {
     let categories_encrypted: string = user.preferences.categories_encrypted;
 
     if (!categories_encrypted) {
+      defaultCategories.forEach((category: Category) => {
+        Object.keys(category.category_rules).forEach((k) => {
+          if (category.category_rules[k].rules) {
+            let rules = category.category_rules[k].rules;
+            rules.forEach(r => {
+              if (Array.isArray(r) && r[1] && r[1] === "$NAME") {
+                r[1] = user.lastName;
+              }
+            });
+          }
+        });
+      });
+
       return res.status(200).json({
         categories: defaultCategories,
       });

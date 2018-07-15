@@ -15,6 +15,7 @@ export const validateRegistration = [
   )),
   check('password').isLength({ min: 8 }),
   check('firstname').optional().isAlphanumeric(),
+  check('lastname').optional().isAlphanumeric(),
 ];
 
 export const validateLogin = [
@@ -29,13 +30,14 @@ export const register = (req: Request, res: Response) => {
     return res.status(422).json({ error: errors.array() });
   }
 
-  let { email, password, firstname } = req.body;
+  let { email, password, firstname, lastname } = req.body;
 
   bcrypt.hash(password, 10)
   .then((hashed_password) => UserModel.create({
       email: email,
       password: hashed_password,
       firstName: firstname,
+      lastName: lastname,
       preferences: {},
       data: {},
     })

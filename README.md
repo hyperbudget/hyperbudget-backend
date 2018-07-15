@@ -43,6 +43,12 @@ The port and host can be configured in the `BUDGET_PORT` and `BUDGET_HOST` env v
 * Trello https://trello.com/b/Xsc32l6a/hyperbudget
 * GH https://github.com/errietta/hyperbudget/issues
 
+# Routes
+
+## Register
+
+
+
 ## Bugs
 
 All of them!

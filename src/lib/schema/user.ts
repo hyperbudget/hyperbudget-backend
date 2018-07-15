@@ -4,7 +4,8 @@ import { Category, Transaction } from '@hyperbudget/hyperbudget-core';
 export interface User {
   id?: any;
   email: string;
-  firstName: string;
+  firstName?: string;
+  lastName?: string;
   password?: string;
   preferences?: {
     categories: Category[],
@@ -25,6 +26,7 @@ export const UserSchema: Schema = new Schema(
     email: String,
     password: String,
     firstName: String,
+    lastName: String,
     createdAt: {
       type: Date,
       default: Date.now,
@@ -47,6 +49,7 @@ UserSchema.methods.forAPI = function () {
     id: this.id,
     email: this.email,
     firstName: this.firstName,
+    lastName: this.lastName,
   };
 };
 
