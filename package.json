@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha -r ts-node/register t/**/*.spec.ts",
     "postinstall": "tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "start:dev": "nodemon dist/index.js"
   },
   "engines": {
     "node": "8.6.0"
@@ -53,6 +54,7 @@
     "@types/openpgp": "0.0.30",
     "chai": "^4.1.2",
     "mocha": "^4.0.1",
+    "nodemon": "^1.18.2",
     "simple-mock": "^0.8.0",
     "ts-node": "^3.3.0"
   }
