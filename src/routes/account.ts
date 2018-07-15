@@ -2,20 +2,27 @@ import { Request, Response } from 'express';
 import { check, validationResult } from 'express-validator/check';
 
 import * as bcrypt from 'bcryptjs';
-import * as jwt from 'jsonwebtoken';
 
-import { UserModel, User, IUserModel } from '../lib/schema/user';
+import { UserModel, User } from '../lib/schema/user';
 import { Utils } from '../lib/utils';
+import { AllowedUserModel } from '../lib/schema/AllowedUsers';
 
 export const validateRegistration = [
   check('email').isEmail().custom((value) => (
-    UserModel.findOne({ email: value })
-    .then((user: User) => (
-      user ? Promise.reject('email in use') : Promise.resolve(true))
-    )
+    AllowedUserModel.findOne({ email: value }).then((u) => {
+      if (u) {
+        return UserModel.findOne({ email: value })
+        .then((user: User) => (
+          user ? Promise.reject('email in use') : Promise.resolve(true))
+        )
+      } else {
+        return Promise.reject('user not in allowed alpha');
+      }
+    })
   )),
   check('password').isLength({ min: 8 }),
   check('firstname').optional().isAlphanumeric(),
+  check('lastname').optional().isAlphanumeric(),
 ];
 
 export const validateLogin = [
@@ -30,13 +37,16 @@ export const register = (req: Request, res: Response) => {
     return res.status(422).json({ error: errors.array() });
   }
 
-  let { email, password, firstname } = req.body;
+  let { email, password, firstname, lastname } = req.body;
 
   bcrypt.hash(password, 10)
   .then((hashed_password) => UserModel.create({
       email: email,
       password: hashed_password,
       firstName: firstname,
+      lastName: lastname,
+      preferences: {},
+      data: {},
     })
   )
   .then(() => UserModel.findOne({
@@ -93,13 +103,9 @@ export const login = (req: Request, res: Response) => {
 }
 
 export const accountInfo = (req: Request, res: Response) => {
-  let decoded = jwt.decode(req.get('x-jwt'));
+  let token = req.get('x-jwt');
 
-  UserModel.findById(decoded['user']['id']).then((user: User) => {
-    if (!user) {
-      throw new Error("The user id stored in session does not exist");
-    }
-
+  Utils.UserFromJWT(token).then((user: User) => {
     res.json({
       authenticated: true,
       user: user.forAPI(),

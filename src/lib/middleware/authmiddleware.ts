@@ -10,8 +10,9 @@ export const authMiddleware = (req: Request, res: Response, next) => {
       if (err) {
         console.log(err);
         return res.status(401).json({
-          errors: [{
+          error: [{
             msg: 'not authenticated',
+            type: 'auth',
           }]
         });
       }

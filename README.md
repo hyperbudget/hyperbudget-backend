@@ -4,13 +4,9 @@ A budget helper. See also [hyperbudget-core](https://github.com/hyperbudget/hype
 
 ## About
 
-This is a budgeting helper. Right now, the only way to use it is to install locally and browse to `${HOST}:${PORT}`. But the idea is to make it a real website where people can make accounts and so on.
+This is a budgeting helper.
 
 Users can import transactions from their bank accounts (currently only in `CSV` format; there are plans to improve this in the future).
-
-Users can then configure transaction categories in `config.json` (**subject to change**). This makes certain transations appear differently in the user's statements. Transactions can also be moved forward or backwards from their original time.
-
-See the [wiki](https://github.com/errietta/hyperbudget/wiki/Categories) for information on how this works.
 
 **SUBJECT TO CHANGE**
 
@@ -29,12 +25,9 @@ This is very early code. The behaviour documented here may change or this may di
 
 `cp config.json.example config.json && vim config.json`
 
-This is how you configure the app. For now. The next step in development will be to store this information in the db.
-In general, you want at the very least to keep the "income", "expenditure", and "main income" categories for the app to be useful, but you probably also want to tweak the categories to whatever is meaningful to you!
-
 ### Run
 
-The port and host can be configured in the `BUDGET_PORT` and `BUDGET_HOST` env vars.
+The port and host can be configured in the `PORT` and `HOST` env vars.
 
 `npm start`
 
@@ -42,6 +35,108 @@ The port and host can be configured in the `BUDGET_PORT` and `BUDGET_HOST` env v
 
 * Trello https://trello.com/b/Xsc32l6a/hyperbudget
 * GH https://github.com/errietta/hyperbudget/issues
+
+# Routes
+
+## Register
+
+```
+POST http://localhost:3000/account/register HTTP/1.1
+content-type: application/json
+
+{
+    "email": "errietta33@errietta.me",
+    "password": "passpasspass",
+    "firstname": "Errietta",
+    "lastname": "Kostala"
+}
+```
+
+## Login
+
+```
+POST http://localhost:3000/account/login HTTP/1.1
+content-type: application/json
+
+{
+    "email": "errietta33@errietta.me",
+    "password": "passpasspass"
+}
+```
+
+## Categories
+
+See the [categories API](https://github.com/hyperbudget/hyperbudget-core/wiki/Categories)
+
+```
+POST http://0.0.0.0:3000/account/categories/list
+Content-Type: application/json
+x-jwt: JWT-HERE
+
+{
+  "password": "mypassword"
+}
+
+POST http://0.0.0.0:3000/account/categories/update
+Content-Type: application/json
+x-jwt: JWT_HERE
+
+{
+  "password": "mypass"
+  "categories": [{
+    "name": "Income",
+    "category_rules": {
+      "txn_amount_credit": {
+        "mode": 1001,
+        "rules": [
+          [">", 0]
+        ]
+      },
+      "txn_desc": {
+        "mode": 1001,
+        "rules": [
+          ["!~", "YOUR NAME"]
+        ]
+      }
+    },
+    "className": "cat-income",
+    "id": "income"
+  }]
+}
+
+```
+
+## Transactions
+
+
+See the [transactions API](https://github.com/hyperbudget/hyperbudget-core/wiki/Transactions)
+
+```
+POST http://0.0.0.0:3000/account/transactions/list
+Content-Type: application/json
+x-jwt: JWT-HERE
+
+{
+  "password": "mypassword"
+}
+
+POST http://0.0.0.0:3000/account/transactions/update
+Content-Type: application/json
+x-jwt: JWT-HERE
+
+{
+  "password": "mypassword",
+  "transactions": [{
+    "txn_src": "lloyds",
+    "txn_amount_credit": "500",
+    "txn_desc": "Description"
+  }]
+}
+```
+
+
+
+
 
 ## Bugs
 
