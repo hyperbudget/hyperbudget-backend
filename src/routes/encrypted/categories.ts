@@ -8,6 +8,8 @@ import * as crypto from '../../lib/crypto';
 
 import { validate_categories } from '@hyperbudget/hyperbudget-core';
 
+const defaultCategories = require('../../../default_categories.json');
+
 export const validateUpdateCategories = [
   check('categories').exists(),
   check('password').isLength({ min: 8 }),
@@ -88,7 +90,9 @@ export const getCategories = (req: Request, res: Response) => {
     let categories_encrypted: string = user.preferences.categories_encrypted;
 
     if (!categories_encrypted) {
-      return res.status(200).json({ categories: [] });
+      return res.status(200).json({
+        categories: defaultCategories,
+      });
     }
 
     crypto.decrypt(categories_encrypted, req.body.password).then(
