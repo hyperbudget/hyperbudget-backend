@@ -5,13 +5,20 @@ import * as bcrypt from 'bcryptjs';
 
 import { UserModel, User } from '../lib/schema/user';
 import { Utils } from '../lib/utils';
+import { AllowedUserModel } from '../lib/schema/AllowedUsers';
 
 export const validateRegistration = [
   check('email').isEmail().custom((value) => (
-    UserModel.findOne({ email: value })
-    .then((user: User) => (
-      user ? Promise.reject('email in use') : Promise.resolve(true))
-    )
+    AllowedUserModel.findOne({ email: value }).then((u) => {
+      if (u) {
+        return UserModel.findOne({ email: value })
+        .then((user: User) => (
+          user ? Promise.reject('email in use') : Promise.resolve(true))
+        )
+      } else {
+        return Promise.reject('user not in allowed alpha');
+      }
+    })
   )),
   check('password').isLength({ min: 8 }),
   check('firstname').optional().isAlphanumeric(),
