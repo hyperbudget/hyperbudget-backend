@@ -106,8 +106,8 @@
         ]
       }
     },
-    "className": "cat-bills",
-    "id": "bills"
+    "className": "cat-dd",
+    "id": "direct-debits"
   },
   {
     "name": "Standing Orders",
@@ -121,8 +121,8 @@
         ]
       }
     },
-    "className": "cat-rent",
-    "id": "rent"
+    "className": "cat-so",
+    "id": "standing-orders"
   },
   {
     "name": "Cash Withdrawals",
