@@ -25,7 +25,7 @@ describe('Crypto', () => {
         () => {
         },
         (err) => {
-          expect(err).to.match(/Session key decryption failed/);
+          expect(err).to.be.a('Error');
         }
       );
     });
