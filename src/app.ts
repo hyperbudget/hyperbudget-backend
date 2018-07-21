@@ -53,7 +53,7 @@ class App {
   }
 
   private connectDB(): void {
-    mongoose.connect(process.env.MONGODB_URI);
+    mongoose.connect(process.env.MONGODB_URI, { keepAlive: 60000 });
   }
 
   private initConfig(): void {
