@@ -3,7 +3,7 @@
     "name": "Income",
     "category_rules": {
       "txn_amount_credit": {
-        "mode": 1001,
+        "mode": "STRICT",
         "rules": [
           [
             ">",
@@ -12,7 +12,7 @@
         ]
       },
       "txn_desc": {
-        "mode": 1001,
+        "mode": "STRICT",
         "rules": [
           [
             "!~",
