@@ -33,7 +33,16 @@ export const updateCategories = (req: Request, res: Response) => {
   }] */
 
   let cat_errors: { id: string, idx: number, errors: string[] }[] =
-    validate_categories(req.body.categories);
+    (() => {
+      const vals = validate_categories(req.body.categories);
+      return vals.map(val => {
+        const errors = val.errors.map(e => e.toString());
+        return {
+          ...val,
+          errors
+        };
+      });
+    })();
 
   if (cat_errors.length > 0) {
     return res.status(422).json({

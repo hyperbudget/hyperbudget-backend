@@ -25,7 +25,16 @@ export const updateTransactions = (req: Request, res: Response) => {
   }
 
   let txn_errors: { id: string, idx: number, errors: string[] }[] =
-    validate_transactions(req.body.transactions);
+    (() => {
+      const vals = validate_transactions(req.body.transactions);
+      return vals.map(val => {
+        const errors = val.errors.map(e => e.toString());
+        return {
+          ...val,
+          errors
+        };
+      });
+    })();
 
   if (txn_errors.length > 0) {
     return res.status(422).json({

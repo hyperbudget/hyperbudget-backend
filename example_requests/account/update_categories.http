@@ -8,13 +8,13 @@ x-jwt: JWT_HERE
     "name": "Income",
     "category_rules": {
       "txn_amount_credit": {
-        "mode": 1001,
+        "mode": "STRICT",
         "rules": [
           [">", 0]
         ]
       },
       "txn_desc": {
-        "mode": 1001,
+        "mode": "STRICT",
         "rules": [
           ["!~", "YOUR NAME"]
         ]
@@ -121,7 +121,7 @@ x-jwt: JWT_HERE
         ]
       },
       "txn_desc": {
-        "mode": 1002,
+        "mode": "FLEX",
         "rules": [
           ["=~", "VIRGIN MEDIA"],
           ["=~", "RATESETTER"]
