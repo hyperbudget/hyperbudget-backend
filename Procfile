@@ -1,1 +1,1 @@
-web: cp config.json.example config.json && node dist/index.js
+web: cp config.json.example config.json && npm start
