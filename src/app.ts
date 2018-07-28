@@ -94,7 +94,10 @@ class App {
   private mountHomeRoute(): void {
     const router = express.Router();
     router.get('/', (req, res) => {
-      res.json({ ok: true });
+      res.json({
+        ok: true,
+        version: process.env.npm_package_version,
+      });
     });
     this.express.use('/', router);
   }
@@ -103,7 +106,7 @@ class App {
     this.express.post('/account/register', accountRoutes.validateRegistration, accountRoutes.register);
     this.express.post('/account/login', accountRoutes.validateLogin, accountRoutes.login);
 
-    this.express.use('/', authMiddleware);
+    this.express.use('/account', authMiddleware);
 
     this.express.get('/account', accountRoutes.accountInfo);
     this.express.post('/account/categories/update', categoryRoutes.validateUpdateCategories, categoryRoutes.updateCategories);
