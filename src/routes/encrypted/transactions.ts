@@ -23,7 +23,7 @@ export const updateTransactions = (req: Request, res: Response) => {
   if (!errors.isEmpty()) {
     return res.status(422).json({ error: errors.array() });
   }
-
+/*
   let txn_errors: { id: string, idx: number, errors: string[] }[] =
     (() => {
       const vals = validate_transactions(req.body.transactions);
@@ -45,7 +45,7 @@ export const updateTransactions = (req: Request, res: Response) => {
       }]
     })
   }
-
+*/
   Utils.UserFromJWT(req.get('x-jwt')).then(
     (user: IUserModel) => {
       console.log(`Starting transactions storage, total transactions = ${req.body.transactions.length}`);
