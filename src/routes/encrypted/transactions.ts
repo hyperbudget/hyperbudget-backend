@@ -48,16 +48,34 @@ export const updateTransactions = (req: Request, res: Response) => {
 
   Utils.UserFromJWT(req.get('x-jwt')).then(
     (user: IUserModel) => {
+      console.log(`Starting transactions storage, total transactions = ${req.body.transactions.length}`);
+
       let stringified = JSON.stringify(req.body.transactions);
+
+      console.log(`Stringified length = ${stringified.length} bytes`);
+
       let password = req.body.password;
+
+      let start = new Date().getTime();
 
       crypto.encrypt(stringified, [password]).then(
         (encrypted: string) => {
+          let end = new Date().getTime();
+          console.log(`Finished encryption in ${end-start}ms, encrypted length = ${encrypted.length} bytes`);
+
+          start = new Date().getTime();
+
+          console.log(`Storing in db`);
+
           user.set({
             data: { transactions_encrypted: encrypted },
           });
           user.save().then(
-            () => res.json({ ok: true }),
+            () => {
+              end = new Date().getTime();
+              console.log(`Finished storage in ${end-start}ms`);
+              return res.json({ ok: true });
+            },
             (err) => {
               console.error(err);
               res.status(422).json({
