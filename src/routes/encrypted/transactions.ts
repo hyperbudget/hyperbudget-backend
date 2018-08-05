@@ -24,7 +24,15 @@ export const updateTransactions = (req: Request, res: Response) => {
     return res.status(422).json({ error: errors.array() });
   }
 
+  let start = new Date().getTime();
+
+  console.log(`Starting validation`);
+
   let txn_errors: { id: string, idx: number, errors: string[] }[] = validate_transactions(req.body.transactions);
+
+  let end = new Date().getTime();
+
+  console.log(`Validation finished, total: ${end - start}ms`);
 
   if (txn_errors.length > 0) {
     return res.status(422).json({
