@@ -23,18 +23,8 @@ export const updateTransactions = (req: Request, res: Response) => {
   if (!errors.isEmpty()) {
     return res.status(422).json({ error: errors.array() });
   }
-/*
-  let txn_errors: { id: string, idx: number, errors: string[] }[] =
-    (() => {
-      const vals = validate_transactions(req.body.transactions);
-      return vals.map(val => {
-        const errors = val.errors.map(e => e.toString());
-        return {
-          ...val,
-          errors
-        };
-      });
-    })();
+
+  let txn_errors: { id: string, idx: number, errors: string[] }[] = validate_transactions(req.body.transactions);
 
   if (txn_errors.length > 0) {
     return res.status(422).json({
@@ -45,7 +35,7 @@ export const updateTransactions = (req: Request, res: Response) => {
       }]
     })
   }
-*/
+
   Utils.UserFromJWT(req.get('x-jwt')).then(
     (user: IUserModel) => {
       console.log(`Starting transactions storage, total transactions = ${req.body.transactions.length}`);
