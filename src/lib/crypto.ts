@@ -3,7 +3,7 @@ import * as openpgp from 'openpgp';
 export const encrypt = (data: string, passwords: string[]): Promise<string> => {
   return new Promise<string>((resolve, reject) => {
     let options: openpgp.EncryptOptions  = {
-        data: data,
+        message: openpgp.message.fromText(data),
         passwords: passwords,
         armor: true,
         compression: openpgp.enums.compression.zlib
