@@ -49,15 +49,17 @@ export const register = (req: Request, res: Response) => {
       data: {},
     })
   )
-  .then(() => UserModel.findOne({
-    email: email
-  }))
+  .then(() => (
+    new Promise((resolve, reject) => (
+      UserModel.findOne({ email: email }).then(resolve, reject)
+    ))
+  ))
   .then((user: User) => {
     res.json({
       success: true,
       userId: user.id,
     });
-  });
+  })
 };
 
 export const login = (req: Request, res: Response) => {
