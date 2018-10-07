@@ -49,51 +49,64 @@ export const updateTransactions = (req: Request, res: Response) => {
       console.log(`Starting transactions storage, total transactions = ${req.body.transactions.length}`);
 
       let stringified = JSON.stringify(req.body.transactions);
+      let password = req.body.password;
 
       console.log(`Stringified length = ${stringified.length} bytes`);
 
-      let password = req.body.password;
+      console.log(`Checking password`);
 
-      let start = new Date().getTime();
+      new Promise((resolve, reject) => {
+        if (user.data.transactions_encrypted) {
+          crypto.decrypt(user.data.transactions_encrypted, password).then(resolve, reject);
+        } else {
+          resolve();
+        }
+      })
+      .then(
+        () => {
+          let start = new Date().getTime();
 
-      crypto.encrypt(stringified, [password]).then(
-        (encrypted: string) => {
-          let end = new Date().getTime();
-          console.log(`Finished encryption in ${end-start}ms, encrypted length = ${encrypted.length} bytes`);
+          crypto.encrypt(stringified, [password]).then(
+            (encrypted: string) => {
+              let end = new Date().getTime();
+              console.log(`Finished encryption in ${end-start}ms, encrypted length = ${encrypted.length} bytes`);
 
-          start = new Date().getTime();
+              start = new Date().getTime();
 
-          console.log(`Storing in db`);
+              console.log(`Storing in db`);
 
-          user.set({
-            data: { transactions_encrypted: encrypted },
-          });
-          user.save().then(
-            () => {
-              end = new Date().getTime();
-              console.log(`Finished storage in ${end-start}ms`);
-              return res.json({ ok: true });
+              user.set({
+                data: { transactions_encrypted: encrypted },
+              });
+              user.save().then(
+                () => {
+                  end = new Date().getTime();
+                  console.log(`Finished storage in ${end-start}ms`);
+                  return res.json({ ok: true });
+                },
+                (err) => {
+                  console.error(err);
+                  res.status(422).json({
+                    ok: false,
+                    error: { type: 'database', message: 'Error saving information' }
+                  });
+                }
+              )
             },
-            (err) => {
-              console.error(err);
+            () => {
+              console.error(`Error encrypting information for user ${user._id}`);
               res.status(422).json({
                 ok: false,
-                error: { type: 'database', message: 'Error saving information' }
+                error: { type: 'encryption', message: 'Error encrypting data' }
               });
             }
-          )
+          );
         },
-        () => {
-          console.error(`Error encrypting information for user ${user._id}`);
-          res.status(422).json({
-            ok: false,
-            error: { type: 'encryption', message: 'Error encrypting data' }
-          });
-        }
+        () => { res.status(422).json({ type: 'login', message: 'Error encrypting data' }) }
       );
     },
     (err) => { res.status(422).json({ type: 'login', message: err }) }
-  )
+  );
 };
 
 export const getTransactions = (req: Request, res: Response) => {

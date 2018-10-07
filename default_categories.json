@@ -2,7 +2,7 @@
   {
     "name": "Income",
     "category_rules": {
-      "txn_amount_credit": {
+      "creditAmount": {
         "mode": "STRICT",
         "rules": [
           [
@@ -11,7 +11,7 @@
           ]
         ]
       },
-      "txn_desc": {
+      "description": {
         "mode": "STRICT",
         "rules": [
           [
@@ -27,7 +27,7 @@
   {
     "name": "Main Income",
     "category_rules": {
-      "txn_amount_credit": {
+      "creditAmount": {
         "rules": [
           [
             ">",
@@ -35,7 +35,7 @@
           ]
         ]
       },
-      "txn_desc": {
+      "description": {
         "rules": [
           [
             "!~",
@@ -51,7 +51,7 @@
   {
     "name": "Expenditure",
     "category_rules": {
-      "txn_amount_debit": {
+      "debitAmount": {
         "rules": [
           [
             ">",
@@ -59,7 +59,7 @@
           ]
         ]
       },
-      "txn_desc": {
+      "description": {
         "rules": [
           [
             "!~",
@@ -74,7 +74,7 @@
   {
     "name": "Refunds",
     "category_rules": {
-      "txn_type": {
+      "type": {
         "rules": [
           [
             "=",
@@ -82,7 +82,7 @@
           ]
         ]
       },
-      "txn_amount_credit": {
+      "creditAmount": {
         "rules": [
           [
             ">",
@@ -97,7 +97,7 @@
   {
     "name": "Direct Debits",
     "category_rules": {
-      "txn_type": {
+      "type": {
         "rules": [
           [
             "=",
@@ -112,7 +112,7 @@
   {
     "name": "Standing Orders",
     "category_rules": {
-      "txn_type": {
+      "type": {
         "rules": [
           [
             "=",
@@ -127,7 +127,7 @@
   {
     "name": "Cash Withdrawals",
     "category_rules": {
-      "txn_type": {
+      "type": {
         "rules": [
           [
             "=",
@@ -142,7 +142,7 @@
   {
     "name": "Personal Bank Transfers",
     "category_rules": {
-      "txn_desc": {
+      "description": {
         "rules": [
           [
             "=~",
@@ -157,7 +157,7 @@
   {
     "name": "Source: HSBC",
     "category_rules": {
-      "txn_src": {
+      "source": {
         "rules": [
           [
             "=",
@@ -172,7 +172,7 @@
   {
     "name": "Source: FairFX Corp",
     "category_rules": {
-      "txn_src": {
+      "source": {
         "rules": [
           [
             "=",
@@ -187,7 +187,7 @@
   {
     "name": "Source: Midata",
     "category_rules": {
-      "txn_src": {
+      "source": {
         "rules": [
           [
             "=",
@@ -202,7 +202,7 @@
   {
     "name": "Source: RBS",
     "category_rules": {
-      "txn_src": {
+      "source": {
         "rules": [
           [
             "=",
@@ -217,7 +217,7 @@
   {
     "name": "Source: LLoyds",
     "category_rules": {
-      "txn_amount_debit": {
+      "debitAmount": {
         "rules": [
           [
             ">",
@@ -225,7 +225,7 @@
           ]
         ]
       },
-      "txn_src": {
+      "source": {
         "rules": [
           [
             "=",
